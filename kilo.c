@@ -13,10 +13,10 @@
 #define KILO_VERSION "0.0.1"
 
 enum editorKey {
-  ARROW_LEFT = 'a',
-  ARROW_RIGHT = 'd',
-  ARROW_UP = 'w',
-  ARROW_DOWN = 's',
+  ARROW_LEFT = 1000,
+  ARROW_RIGHT,
+  ARROW_UP,
+  ARROW_DOWN,
 };
 
 // data
@@ -64,7 +64,7 @@ void enableRawMode() {
   }
 }
 
-char editorReadKey() {
+int editorReadKey() {
   int nread;
   char c;
   while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
@@ -122,11 +122,11 @@ int getCursorPosition(int *rows, int *cols) {
   return 0;
 }
 // input
-void editorMoveCursor(char key) {
+void editorMoveCursor(int key) {
   switch (key) {
   case ARROW_LEFT:
     E.cx--;
-  bARROW_DOWN:;
+    break;
   case ARROW_RIGHT:
     E.cx++;
     break;
@@ -173,7 +173,7 @@ void abAppend(struct abuf *ab, const char *s, int len) {
 void abFree(struct abuf *ab) { free(ab->b); }
 
 void editorProcessKeypress() {
-  char c = editorReadKey();
+  int c = editorReadKey();
   switch (c) {
   case CTRL_KEY('q'):
     write(STDOUT_FILENO, "\x1b[2J", 4);
